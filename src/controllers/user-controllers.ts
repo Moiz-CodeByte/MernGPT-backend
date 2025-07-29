@@ -42,9 +42,11 @@ export const userSignup = async (
       // create token and store cookie
       res.clearCookie(COOKIE_NAME, {
         httpOnly: true,
-        domain: "localhost",
+        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production"
       });
   
       const token = createToken(user._id.toString(), user.email, "7d");
@@ -52,10 +54,12 @@ export const userSignup = async (
       expires.setDate(expires.getDate() + 7);
       res.cookie(COOKIE_NAME, token, {
         path: "/",
-        domain: "localhost",
+        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         expires,
         httpOnly: true,
         signed: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production"
       });
   
       return res
@@ -87,14 +91,27 @@ export const userLogin = async (
             return res.status(403).send("incorrect password");
         }
         res.clearCookie(COOKIE_NAME, {
-            domain:"localhost", httpOnly: true, signed: true, path :"/"
+            domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost", 
+            httpOnly: true, 
+            signed: true, 
+            path:"/",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production"
         });
 
         const token = createToken(userExisted._id.toString() , userExisted.email , "7d" );
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         
-        res.cookie(COOKIE_NAME, token, {path:"/", domain:"localhost", expires, httpOnly: true, signed: true, })
+        res.cookie(COOKIE_NAME, token, {
+          path:"/", 
+          domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost", 
+          expires, 
+          httpOnly: true, 
+          signed: true,
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          secure: process.env.NODE_ENV === "production"
+        })
         return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email});
         }
         
@@ -155,9 +172,11 @@ export const userLogout = async (
   
       res.clearCookie(COOKIE_NAME, {
         httpOnly: true,
-        domain: "localhost",
+        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production"
       });
   
       return res
