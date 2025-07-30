@@ -7,53 +7,113 @@ It's a customized chatbot where each message of the user is stored in DB and can
 
 It's a completely secure application using JWT Tokens, HTTP-Only Cookies, Signed Cookies, Password Encryption, and Middleware Chains.
 
-## Deployment to Heroku
+## Related Repositories
+
+- Frontend: [https://github.com/Moiz-CodeByte/merngpt-frontend](https://github.com/Moiz-CodeByte/merngpt-frontend)
+
+## How to Run the Project
 
 ### Prerequisites
-- Heroku account
-- Heroku CLI installed
-- Git installed
 
-### Steps to Deploy
+- Ensure you have Node.js and npm installed.
+- MongoDB should be installed and running on your system.
 
-1. **Login to Heroku**
-   ```
-   heroku login
-   ```
+### Backend Setup
 
-2. **Create a new Heroku app**
-   ```
-   heroku create your-app-name
-   ```
+Git clone the backend of MERN-AI-ChatBot:
 
-3. **Set Environment Variables**
-   Set all the required environment variables in Heroku dashboard or using CLI:
-   ```
-   heroku config:set MONGODB_URL=your_mongodb_connection_string
-   heroku config:set JWT_SECRET=your_jwt_secret_key
-   heroku config:set COOKIE_SECRET=your_cookie_secret
-   heroku config:set GROK_API_KEY=your_groq_api_key
-   heroku config:set NODE_ENV=production
-   heroku config:set FRONTEND_URL=https://your-frontend-app.herokuapp.com
-   heroku config:set DOMAIN=your-frontend-app.herokuapp.com
-   ```
+```bash
+git clone https://github.com/Moiz-CodeByte/merngpt-backend/
+```
 
-4. **Push to Heroku**
-   ```
-   git push heroku main
-   ```
+Navigate to the backend folder:
 
-5. **Open the app**
+```bash
+cd merngpt-backend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the backend server:
+
+```bash
+npm start
+```
+
+By default, the server runs on http://localhost:5000.
+
+### Frontend Setup
+
+Git clone the Frontend of MERN-AI-ChatBot:
+
+```bash
+git clone https://github.com/Moiz-CodeByte/merngpt-frontend
+```
+
+Navigate to the frontend folder:
+
+```bash
+cd merngpt-frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+The frontend will run on http://localhost:5173.
+
+## Technology Stack
+
+### Backend:
+- MongoDB
+- Express.js
+- Node.js
+- Groq API (Llama3 model)
+
+### Frontend:
+- React
+- TypeScript
+- Vite
+- Material UI
+- Axios
+- React Router
+
+## Contributing
+
+Contributions are welcome! If you have any ideas, suggestions, or improvements, feel free to create a pull request or open an issue.
+
+### Steps to Contribute
+
+1. Fork the repository.
+2. Create a new branch:
+   ```bash
+   git checkout -b feature/your-feature-name
    ```
-   heroku open
+3. Make your changes and commit them:
+   ```bash
+   git commit -m "Add your feature"
    ```
+4. Push to the branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. Open a pull request.
 
-## Local Development
+## License
 
-1. Clone the repository
-2. Create a `.env` file based on `.env.example`
-3. Install dependencies: `npm install`
-4. Run in development mode: `npm run dev`
+This project is open-source and available under the MIT License.
 
-Contributions are welcome
+For any questions or support, please contact at hello@abdulmoiz.net.
 
