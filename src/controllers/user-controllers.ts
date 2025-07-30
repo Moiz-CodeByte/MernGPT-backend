@@ -45,7 +45,7 @@ export const userSignup = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production"
       });
   
@@ -58,7 +58,7 @@ export const userSignup = async (
         expires,
         httpOnly: true,
         signed: true,
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production"
       });
   
@@ -95,7 +95,7 @@ export const userLogin = async (
             httpOnly: true, 
             signed: true, 
             path:"/",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            sameSite: "none",
             secure: process.env.NODE_ENV === "production"
         });
 
@@ -109,7 +109,7 @@ export const userLogin = async (
           expires, 
           httpOnly: true, 
           signed: true,
-          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          sameSite: "none",
           secure: process.env.NODE_ENV === "production"
         })
         return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email});
@@ -175,7 +175,7 @@ export const userLogout = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        sameSite: "none",
         secure: process.env.NODE_ENV === "production"
       });
   
