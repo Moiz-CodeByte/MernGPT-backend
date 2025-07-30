@@ -9,7 +9,7 @@ It's a completely secure application using JWT Tokens, HTTP-Only Cookies, Signed
 
 ## Related Repositories
 
-- Frontend: [https://github.com/Moiz-CodeByte/merngpt-frontend](https://github.com/Moiz-CodeByte/merngpt-frontend)
+- Frontend: [https://github.com/Moiz-CodeByte/merngpt](https://github.com/Moiz-CodeByte/merngpt)
 
 ## How to Run the Project
 
@@ -51,7 +51,7 @@ By default, the server runs on http://localhost:5000.
 Git clone the Frontend of MERN-AI-ChatBot:
 
 ```bash
-git clone https://github.com/Moiz-CodeByte/merngpt-frontend
+git clone https://github.com/Moiz-CodeByte/merngpt
 ```
 
 Navigate to the frontend folder:
