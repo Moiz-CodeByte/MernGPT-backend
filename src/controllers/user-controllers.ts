@@ -46,7 +46,7 @@ export const userSignup = async (
         signed: true,
         path: "/",
         sameSite: "none",
-        secure: process.env.NODE_ENV === "production"
+        secure: true
       });
   
       const token = createToken(user._id.toString(), user.email, "7d");
@@ -59,12 +59,15 @@ export const userSignup = async (
         httpOnly: true,
         signed: true,
         sameSite: "none",
-        secure: process.env.NODE_ENV === "production"
+        secure: true
       });
+      
+      // Also return the token in the response for clients that can't handle cookies
+      console.log('Setting cookie with token:', token);
   
       return res
         .status(201)
-        .json({ message: "OK", name: user.name, email: user.email });
+        .json({ message: "OK", name: user.name, email: user.email, token: token });
     } catch (error) {
       console.log(error);
       return res.status(200).json({ message: "ERROR", cause: error.message });
@@ -96,7 +99,7 @@ export const userLogin = async (
             signed: true, 
             path:"/",
             sameSite: "none",
-            secure: process.env.NODE_ENV === "production"
+            secure: true
         });
 
         const token = createToken(userExisted._id.toString() , userExisted.email , "7d" );
@@ -110,9 +113,11 @@ export const userLogin = async (
           httpOnly: true, 
           signed: true,
           sameSite: "none",
-          secure: process.env.NODE_ENV === "production"
-        })
-        return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email});
+          secure: true
+        });
+        
+        console.log('Login successful, setting cookie with token:', token);
+        return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email, token: token});
         }
         
        

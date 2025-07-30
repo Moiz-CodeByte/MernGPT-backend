@@ -7,11 +7,19 @@ import cors from "cors"
 config();
 const app = express();
 app.use(cors({
-  origin: true,
+  origin: '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
+
+// Log all requests for debugging
+app.use((req, res, next) => {
+  console.log('Request URL:', req.url);
+  console.log('Request Method:', req.method);
+  console.log('Request Headers:', req.headers);
+  next();
+});
 app.use(express.json()); // for parsing application/json
 
 app.use(cookieParser(process.env.COOKIE_SECRET));

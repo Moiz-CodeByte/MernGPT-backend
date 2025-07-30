@@ -14,7 +14,18 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     console.log('Signed Cookies:', req.signedCookies);
     console.log('Headers:', req.headers);
     
-    const token = req.signedCookies[`${COOKIE_NAME}`];
+    // Try to get token from cookies first
+    let token = req.signedCookies[`${COOKIE_NAME}`];
+    
+    // If no token in cookies, check Authorization header
+    if (!token && req.headers.authorization) {
+        const authHeader = req.headers.authorization;
+        if (authHeader.startsWith('Bearer ')) {
+            token = authHeader.substring(7);
+            console.log('Using token from Authorization header');
+        }
+    }
+    
     if(!token || token.trim()== ""){
         return res.status(401).json({message:"No token provided."});
          
