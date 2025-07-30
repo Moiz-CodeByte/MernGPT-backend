@@ -40,27 +40,51 @@ export const userSignup = async (
       await user.save();
   
       // create token and store cookie
-      res.clearCookie(COOKIE_NAME, {
-        httpOnly: true,
-        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
-        signed: true,
+      // In production, don't set domain explicitly to allow the browser to use the current domain
+      const clearCookieOptions = {
         path: "/",
+        httpOnly: true,
+        signed: true,
         sameSite: "none",
         secure: true
+      };
+      
+      // Only set domain in development
+      if (process.env.NODE_ENV !== "production") {
+        clearCookieOptions['domain'] = "localhost";
+      }
+      
+      res.clearCookie(COOKIE_NAME, {
+        ...clearCookieOptions,
+        sameSite: "none" as const
       });
+      
+      console.log("Cookie cleared with options:", clearCookieOptions);
   
       const token = createToken(user._id.toString(), user.email, "7d");
       const expires = new Date();
       expires.setDate(expires.getDate() + 7);
-      res.cookie(COOKIE_NAME, token, {
+      // In production, don't set domain explicitly to allow the browser to use the current domain
+      const cookieOptions = {
         path: "/",
-        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         expires,
         httpOnly: true,
         signed: true,
         sameSite: "none",
         secure: true
+      };
+      
+      // Only set domain in development
+      if (process.env.NODE_ENV !== "production") {
+        cookieOptions['domain'] = "localhost";
+      }
+      
+      res.cookie(COOKIE_NAME, token, {
+        ...cookieOptions,
+        sameSite: "none" as const
       });
+      
+      console.log("Cookie set with options:", cookieOptions);
       
       // For debugging in production
       console.log("Cookie set with domain:", process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost");
@@ -100,28 +124,52 @@ export const userLogin = async (
         if(!isPasswordCorrect){
             return res.status(403).send("incorrect password");
         }
+        // In production, don't set domain explicitly to allow the browser to use the current domain
+        const clearCookieOptions = {
+          path: "/",
+          httpOnly: true,
+          signed: true,
+          sameSite: "none",
+          secure: true
+        };
+        
+        // Only set domain in development
+        if (process.env.NODE_ENV !== "production") {
+          clearCookieOptions['domain'] = "localhost";
+        }
+        
         res.clearCookie(COOKIE_NAME, {
-            domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost", 
-            httpOnly: true, 
-            signed: true, 
-            path:"/",
-            sameSite: "none",
-            secure: true
+          ...clearCookieOptions,
+          sameSite: "none" as const
         });
+        
+        console.log("Login - Cookie cleared with options:", clearCookieOptions);
 
         const token = createToken(userExisted._id.toString() , userExisted.email , "7d" );
         const expires = new Date();
         expires.setDate(expires.getDate() + 7);
         
-        res.cookie(COOKIE_NAME, token, {
-          path:"/", 
-          domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost", 
-          expires, 
-          httpOnly: true, 
+        // In production, don't set domain explicitly to allow the browser to use the current domain
+        const cookieOptions = {
+          path: "/",
+          expires,
+          httpOnly: true,
           signed: true,
           sameSite: "none",
           secure: true
+        };
+        
+        // Only set domain in development
+        if (process.env.NODE_ENV !== "production") {
+          cookieOptions['domain'] = "localhost";
+        }
+        
+        res.cookie(COOKIE_NAME, token, {
+          ...cookieOptions,
+          sameSite: "none" as const
         });
+        
+        console.log("Login - Cookie set with options:", cookieOptions);
         
         // For debugging in production
         console.log("Login - Cookie set with domain:", process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost");
@@ -190,14 +238,26 @@ export const userLogout = async (
         return res.status(401).send("Permissions didn't match");
       }
   
-      res.clearCookie(COOKIE_NAME, {
-        httpOnly: true,
-        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
-        signed: true,
+      // In production, don't set domain explicitly to allow the browser to use the current domain
+      const clearCookieOptions = {
         path: "/",
+        httpOnly: true,
+        signed: true,
         sameSite: "none",
         secure: true
+      };
+      
+      // Only set domain in development
+      if (process.env.NODE_ENV !== "production") {
+        clearCookieOptions['domain'] = "localhost";
+      }
+      
+      res.clearCookie(COOKIE_NAME, {
+        ...clearCookieOptions,
+        sameSite: "none" as const
       });
+      
+      console.log("Logout - Cookie cleared with options:", clearCookieOptions);
   
       return res
         .status(200)
