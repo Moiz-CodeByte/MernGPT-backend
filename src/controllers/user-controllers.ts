@@ -45,8 +45,8 @@ export const userSignup = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        secure: process.env.NODE_ENV === "production"
+        sameSite: "none",
+        secure: true
       });
   
       const token = createToken(user._id.toString(), user.email, "7d");
@@ -58,6 +58,16 @@ export const userSignup = async (
         expires,
         httpOnly: true,
         signed: true,
+        sameSite: "none",
+        secure: true
+      });
+      
+      // For debugging in production
+      console.log("Cookie set with domain:", process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost");
+      console.log("Environment:", process.env.NODE_ENV);
+      console.log("Cookie settings:", {
+        path: "/",
+        domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production"
       });
@@ -95,8 +105,8 @@ export const userLogin = async (
             httpOnly: true, 
             signed: true, 
             path:"/",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-            secure: process.env.NODE_ENV === "production"
+            sameSite: "none",
+            secure: true
         });
 
         const token = createToken(userExisted._id.toString() , userExisted.email , "7d" );
@@ -109,9 +119,19 @@ export const userLogin = async (
           expires, 
           httpOnly: true, 
           signed: true,
+          sameSite: "none",
+          secure: true
+        });
+        
+        // For debugging in production
+        console.log("Login - Cookie set with domain:", process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost");
+        console.log("Login - Environment:", process.env.NODE_ENV);
+        console.log("Login - Cookie settings:", {
+          path: "/",
+          domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
           sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
           secure: process.env.NODE_ENV === "production"
-        })
+        });
         return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email});
         }
         
@@ -175,8 +195,8 @@ export const userLogout = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        secure: process.env.NODE_ENV === "production"
+        sameSite: "none",
+        secure: true
       });
   
       return res

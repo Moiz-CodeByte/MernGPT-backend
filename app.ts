@@ -10,8 +10,16 @@ app.use(cors({
   origin: process.env.NODE_ENV === "production" 
     ? process.env.FRONTEND_URL 
     : "http://localhost:5173", 
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Log CORS configuration for debugging
+console.log("CORS configuration:", {
+  origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_URL : "http://localhost:5173",
+  credentials: true
+});
 app.use(express.json()); // for parsing application/json
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
