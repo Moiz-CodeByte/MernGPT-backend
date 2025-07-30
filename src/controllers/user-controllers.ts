@@ -45,8 +45,8 @@ export const userSignup = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: "none",
-        secure: true
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production"
       });
   
       const token = createToken(user._id.toString(), user.email, "7d");
@@ -58,16 +58,13 @@ export const userSignup = async (
         expires,
         httpOnly: true,
         signed: true,
-        sameSite: "none",
-        secure: true
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production"
       });
-      
-      // Also return the token in the response for clients that can't handle cookies
-      console.log('Setting cookie with token:', token);
   
       return res
         .status(201)
-        .json({ message: "OK", name: user.name, email: user.email, token: token });
+        .json({ message: "OK", name: user.name, email: user.email });
     } catch (error) {
       console.log(error);
       return res.status(200).json({ message: "ERROR", cause: error.message });
@@ -98,8 +95,8 @@ export const userLogin = async (
             httpOnly: true, 
             signed: true, 
             path:"/",
-            sameSite: "none",
-            secure: true
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: process.env.NODE_ENV === "production"
         });
 
         const token = createToken(userExisted._id.toString() , userExisted.email , "7d" );
@@ -112,12 +109,10 @@ export const userLogin = async (
           expires, 
           httpOnly: true, 
           signed: true,
-          sameSite: "none",
-          secure: true
-        });
-        
-        console.log('Login successful, setting cookie with token:', token);
-        return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email, token: token});
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          secure: process.env.NODE_ENV === "production"
+        })
+        return res.status(200).json({message: "ok login" , name: userExisted.name, email: userExisted.email});
         }
         
        
@@ -180,7 +175,7 @@ export const userLogout = async (
         domain: process.env.NODE_ENV === "production" ? process.env.DOMAIN : "localhost",
         signed: true,
         path: "/",
-        sameSite: "none",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         secure: process.env.NODE_ENV === "production"
       });
   

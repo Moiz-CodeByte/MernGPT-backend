@@ -10,37 +10,25 @@ export const createToken = (id : String, email : String, expiresIn) => {
 };
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction)=>{
-    console.log('Cookies:', req.cookies);
-    console.log('Signed Cookies:', req.signedCookies);
-    console.log('Headers:', req.headers);
-    
-    // Try to get token from cookies first
-    let token = req.signedCookies[`${COOKIE_NAME}`];
-    
-    // If no token in cookies, check Authorization header
-    if (!token && req.headers.authorization) {
-        const authHeader = req.headers.authorization;
-        if (authHeader.startsWith('Bearer ')) {
-            token = authHeader.substring(7);
-            console.log('Using token from Authorization header');
-        }
-    }
-    
+    const token = req.signedCookies[`${COOKIE_NAME}`];
     if(!token || token.trim()== ""){
-        return res.status(401).json({message:"No token provided."});
+        return res.status(401).json({messaeg:"No token provided."});
          
     }
-    try {
-        console.log('Attempting to verify token:', token);
-        console.log('Using JWT_SECRET:', process.env.JWT_SECRET ? 'Secret is set' : 'Secret is NOT set');
-        
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('Token decoded successfully:', decoded);
-        res.locals.jwtData = decoded;
-        return next();
-    } catch (error) {
-        console.log('Token verification error:', error);
-        return res.status(401).json({message:"Token expired or invalid."});
-    }
+    return new Promise<void>((resolve, reject)=>{
+        return jwt.verify(token, process.env.JWT_SECRET, (err,  success)=>{
+            if(err){
+                reject(err.message);
+                return res.status(401).json({message:  "Token Expired"})
+            }
+            else{
+                //console.log("Token verification Successfull");
+                resolve();
+                res.locals.jwtData = success
+                return next();
+            }
+        })
+    })
+    console.log(token);
     
 }
