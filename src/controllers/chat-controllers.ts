@@ -32,7 +32,7 @@ export const generateChatCompletion = async (
 
     //get latest response
     const chatResponse = await groq.chat.completions.create({
-      model: "llama3-8b-8192",
+      model: "openai/gpt-oss-120b",
       messages: chats.map(msg => ({
         role: msg.role as 'user' | 'assistant' | 'system',
         content: msg.content
